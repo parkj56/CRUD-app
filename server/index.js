@@ -1,16 +1,26 @@
-const express = require('express')
-const app = express()
-const mysql = require('mysql')
-const bodyParser= require('body-parser')
+const express = require('express');
+const app = express();
+const mysql = require('mysql');
+const bodyParser= require('body-parser');
+const cors = require('cors');
 
 const db = mysql.createPool({
     host: 'localhost',
     user:'root',
-    password:'ssdd88',
+    password:'password',
     database:'crud_database',
 });
 
-app.use(bodyParser.urlencoded({entended: true}))
+app.get('/api/get', (req, res)=>{
+    const sqlSelect = "SELECT * FROM movie_reviews"
+    db.query(sqlSelect, (err,result)=>{
+        res.send(result);
+    });
+})
+
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({extended: true}))
 
 app.post('/api/insert', (req, res)=>{
 
@@ -20,7 +30,7 @@ app.post('/api/insert', (req, res)=>{
     const sqlInsert = "INSERT INTO movie_reviews (movieName, movieReview) VALUES (?,?);"
     db.query(sqlInsert, [movieName, movieReview], (err,result)=>{
         console.log(result)
-    })
+    });
 });
 
 

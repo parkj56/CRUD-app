@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import Axios from 'axios';
 import './App.css';
 
@@ -7,6 +7,12 @@ function App() {
 
   const [movieName, setMovieName] = useState('')
   const [review, setReview] = useState('')
+
+useEffect(()=>{
+  Axios.get('http://localhost:3001/api/get').then((response)=>{
+    console.log(response.data);
+  })
+}, [])
 
   const submitReview = () => {
     Axios.post('http://localhost:3001/api/insert', 
